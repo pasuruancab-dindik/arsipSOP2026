@@ -1,35 +1,121 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Akses Pengumpulan SOP BPOPP</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal SOP BPOPP</title>
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f4f4f4; }
-        .box { background: white; padding: 20px; border-radius: 8px; shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
-        input { padding: 10px; width: 80%; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; }
-        button { padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        /* Reset & Base Style */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { height: 100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; }
+
+        /* Login Container */
+        #login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .login-box h2 { color: #1a73e8; margin-bottom: 10px; }
+        .login-box p { color: #5f6368; margin-bottom: 25px; font-size: 14px; }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        input[type="password"]:focus { border: 2px solid #1a73e8; }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover { background-color: #1557b0; }
+
+        #error-msg { color: #d93025; font-size: 13px; margin-top: 10px; display: none; }
+
+        /* Frame Container (Hidden by default) */
+        #frame-container {
+            display: none;
+            height: 100%;
+            width: 100%;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h3>Masukkan Password Akses BPOPP</h3>
-        <input type="password" id="pass" placeholder="Password...">
-        <br>
-        <button onclick="checkPass()">Masuk</button>
-        <p id="msg" style="color:red;"></p>
+
+    <div id="login-container">
+        <div class="login-box">
+            <h2>Akses BPOPP</h2>
+            <p>Silakan masukkan kode akses untuk mengunduh atau mengunggah SOP.</p>
+            <input type="password" id="passInput" placeholder="Masukkan Password">
+            <button onclick="validateAccess()">Masuk ke Folder</button>
+            <p id="error-msg">Password salah, silakan coba lagi.</p>
+        </div>
+    </div>
+
+    <div id="frame-container">
+        <iframe id="driveFrame" src="" allow="autoplay"></iframe>
     </div>
 
     <script>
-        function checkPass() {
-            var input = document.getElementById("pass").value;
-            // Ganti 'RAHASIA2026' dengan password yang kamu inginkan
-            if (input === "bukaArsipBPOPP") {
-                // Ganti URL di bawah dengan link Google Drive kamu
-                window.location.href = "https://drive.google.com/drive/folders/1ZWPTCgW-rAI51jOatcoMzQFJ8dB4Bnq0?usp=drive_link";
+        function validateAccess() {
+            const pass = document.getElementById('passInput').value;
+            const errorMsg = document.getElementById('error-msg');
+            
+            // --- KONFIGURASI DI SINI ---
+            const passwordBenar = "ArsipBPOPP2026"; // Ganti dengan password yang kamu mau
+            const linkDrive = "https://drive.google.com/drive/folders/1ZWPTCgW-rAI51jOatcoMzQFJ8dB4Bnq0?usp=drive_link"; 
+            // ---------------------------
+
+            if (pass === passwordBenar) {
+                // Sembunyikan login, tampilkan drive
+                document.getElementById('login-container').style.display = 'none';
+                document.getElementById('frame-container').style.display = 'block';
+                document.getElementById('driveFrame').src = linkDrive;
             } else {
-                document.getElementById("msg").innerText = "Password Salah!";
+                // Tampilkan pesan error
+                errorMsg.style.display = 'block';
+                document.getElementById('passInput').value = "";
             }
         }
+
+        // Memungkinkan tekan 'Enter' untuk submit
+        document.getElementById("passInput").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                validateAccess();
+            }
+        });
     </script>
 </body>
 </html>
