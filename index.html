@@ -3,119 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal SOP BPOPP</title>
+    <title>Verifikasi Akses SOP BPOPP</title>
     <style>
-        /* Reset & Base Style */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { height: 100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; }
-
-        /* Login Container */
-        #login-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .login-box {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
-        }
-
-        .login-box h2 { color: #1a73e8; margin-bottom: 10px; }
-        .login-box p { color: #5f6368; margin-bottom: 25px; font-size: 14px; }
-
-        input[type="password"] {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #dadce0;
-            border-radius: 4px;
-            outline: none;
-            transition: border 0.3s;
-        }
-
-        input[type="password"]:focus { border: 2px solid #1a73e8; }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #1a73e8;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        button:hover { background-color: #1557b0; }
-
-        #error-msg { color: #d93025; font-size: 13px; margin-top: 10px; display: none; }
-
-        /* Frame Container (Hidden by default) */
-        #frame-container {
-            display: none;
-            height: 100%;
-            width: 100%;
-        }
-
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; width: 350px; }
+        h2 { color: #202124; margin-bottom: 10px; font-size: 22px; }
+        p { color: #5f6368; font-size: 14px; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+        button { width: 100%; padding: 12px; background: #1a73e8; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        button:hover { background: #1557b0; }
+        #error { color: #d93025; font-size: 13px; margin-top: 10px; display: none; }
+        .loading { display: none; margin-top: 15px; font-style: italic; color: #1a73e8; }
     </style>
 </head>
 <body>
 
-    <div id="login-container">
-        <div class="login-box">
-            <h2>Akses BPOPP</h2>
-            <p>Silakan masukkan kode akses untuk mengunduh atau mengunggah SOP.</p>
-            <input type="password" id="passInput" placeholder="Masukkan Password">
-            <button onclick="validateAccess()">Masuk ke Folder</button>
-            <p id="error-msg">Password salah, silakan coba lagi.</p>
-        </div>
-    </div>
+<div class="card">
+    <h2>Akses Terproteksi</h2>
+    <p>Masukkan kode akses untuk membuka Folder SOP BPOPP.</p>
+    <input type="password" id="pass" placeholder="Password">
+    <button onclick="verify()">Buka Folder</button>
+    <p id="error">Password salah!</p>
+    <div id="loading" class="loading">Memverifikasi...</div>
+</div>
 
-    <div id="frame-container">
-        <iframe id="driveFrame" src="" allow="autoplay"></iframe>
-    </div>
+<script>
+    function verify() {
+        const input = document.getElementById('pass').value;
+        const error = document.getElementById('error');
+        const loading = document.getElementById('loading');
 
-    <script>
-        function validateAccess() {
-            const pass = document.getElementById('passInput').value;
-            const errorMsg = document.getElementById('error-msg');
+        // GANTI DI SINI
+        const KODE_AKSES = "BPOPP2026"; 
+        const LINK_DRIVE = "https://drive.google.com/drive/folders/1ZWPTCgW-rAI51jOatcoMzQFJ8dB4Bnq0";
+
+        if (input === KODE_AKSES) {
+            error.style.display = 'none';
+            loading.style.display = 'block';
             
-            // --- KONFIGURASI DI SINI ---
-            const passwordBenar = "ArsipBPOPP2026"; // Ganti dengan password yang kamu mau
-            const linkDrive = "https://drive.google.com/drive/folders/1ZWPTCgW-rAI51jOatcoMzQFJ8dB4Bnq0"; 
-            // ---------------------------
-
-            if (pass === passwordBenar) {
-                // Sembunyikan login, tampilkan drive
-                document.getElementById('login-container').style.display = 'none';
-                document.getElementById('frame-container').style.display = 'block';
-                document.getElementById('driveFrame').src = linkDrive;
-            } else {
-                // Tampilkan pesan error
-                errorMsg.style.display = 'block';
-                document.getElementById('passInput').value = "";
-            }
+            // Memberi jeda sedikit agar terlihat seperti proses verifikasi sistem
+            setTimeout(() => {
+                window.location.href = LINK_DRIVE;
+            }, 800);
+        } else {
+            error.style.display = 'block';
+            document.getElementById('pass').value = "";
         }
+    }
 
-        // Memungkinkan tekan 'Enter' untuk submit
-        document.getElementById("passInput").addEventListener("keyup", function(event) {
-            if (event.key === "Enter") {
-                validateAccess();
-            }
-        });
-    </script>
+    // Support tombol Enter
+    document.getElementById("pass").addEventListener("keyup", function(event) {
+        if (event.key === "Enter") verify();
+    });
+</script>
+
 </body>
 </html>
