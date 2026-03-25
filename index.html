@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Akses Pengumpulan SOP BPOPP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f4f4f4; }
+        .box { background: white; padding: 20px; border-radius: 8px; shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
+        input { padding: 10px; width: 80%; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h3>Masukkan Password Akses BPOPP</h3>
+        <input type="password" id="pass" placeholder="Password...">
+        <br>
+        <button onclick="checkPass()">Masuk</button>
+        <p id="msg" style="color:red;"></p>
+    </div>
+
+    <script>
+        function checkPass() {
+            var input = document.getElementById("pass").value;
+            // Ganti 'RAHASIA2026' dengan password yang kamu inginkan
+            if (input === "RAHASIA2026") {
+                // Ganti URL di bawah dengan link Google Drive kamu
+                window.location.href = "https://drive.google.com/drive/folders/LINK_DRIVE_KAMU";
+            } else {
+                document.getElementById("msg").innerText = "Password Salah!";
+            }
+        }
+    </script>
+</body>
+</html>
